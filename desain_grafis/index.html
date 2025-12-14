@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Brews - Street Coffee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a3a2e;
+            --secondary: #2d5a4a;
+            --accent: #D4AF37;
+            --light: #F5E6D3;
+            --text-dark: #1a3a2e;
+            --text-light: #F5E6D3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light);
+            line-height: 1.6;
+        }
+
+        nav {
+            background-color: var(--primary);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--accent);
+            background-color: rgba(212, 175, 55, 0.15);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text-light);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-heading h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .media-grid, .products-grid, .merch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .media-card, .product-card, .merch-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15);
+            transition: all 0.4s ease;
+        }
+
+        .media-card:hover, .product-card:hover, .merch-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(44, 24, 16, 0.25);
+        }
+
+        .media-card-content, .product-info, .merch-info {
+            padding: 2rem;
+        }
+
+        .media-card h3, .product-info h3, .merch-info h3 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .product-image, .merch-image {
+            width: 100%;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .product-image {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: var(--text-light);
+        }
+
+        .merch-image {
+            background: var(--light);
+        }
+
+        .merch-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .merch-card:hover .merch-image img {
+            transform: scale(1.1);
+        }
+
+        .price {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+        .about-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(44, 24, 16, 0.12);
+        }
+
+        .about-content h2 {
+            color: var(--primary);
+            margin: 2rem 0 1rem 0;
+            font-size: 2rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .story-highlight {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(139, 69, 19, 0.08));
+            border-left: 5px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .story-highlight h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-form, .location-info {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(44, 24, 16, 0.12);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-light);
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(44, 24, 16, 0.4);
+        }
+
+        .location-info h3 {
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .location-info p {
+            margin-bottom: 0.8rem;
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-light);
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-light);
+            text-align: center;
+            padding: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            nav ul { gap: 0.8rem; }
+            .contact-container { grid-template-columns: 1fr; }
+            .media-grid, .products-grid, .merch-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#" class="nav-link active" onclick="showSection('beranda', event)">Beranda</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('about', event)">About</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('product', event)">Product</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('merchandise', event)">Merchandise</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('contact', event)">Kontak</a></li>
+        </ul>
+    </nav>
+
+    <section id="beranda" class="section active">
+        <div class="hero">
+            <h1>
+                <img src="logo.jpeg" alt="Secret Brews logo" style="height: 80px; vertical-align: middle; margin-right: 1rem;">
+                Secret Brews.CO
+            </h1>
+            <p>Temukan Rahasia Rasa dalam Setiap Tegukan</p>
+        </div>
+        <div class="container">
+            <div class="section-heading">
+                <h2>Dokumentasi & Galeri</h2>
+                <p>Lihat momen spesial dan cerita di balik Secret Brews</p>
+            </div>
+            <div class="media-grid">
+                <div class="media-card">
+                    <iframe src="https://www.instagram.com/reel/DSMEsQhD66A/embed" 
+                            width="100%" 
+                            height="400" 
+                            frameborder="0" 
+                            scrolling="no" 
+                            allowtransparency="true"
+                            style="border: none; overflow: hidden;">
+                    </iframe>
+                    <div class="media-card-content">
+                        <h3>🎥 Video Racikan Rahasia Kami</h3>
+                        <p><strong>"Bukan sekadar kopi, tapi pengalaman. Berani coba racikan rahasia kami?"</strong></p>
+                        <p style="color: #D4AF37; font-weight: 600; margin-top: 0.5rem;">
+                            #SecretBrews #CeritaDalamSecangkir #RasaRahasia
+                        </p>
+                    </div>
+                </div>
+                <div class="media-card">
+                    <img src="dokumentasi1.jpeg" alt="Dokumentasi Secret Brews" style="width: 100%; height: 400px; object-fit: cover;">
+                    <div class="media-card-content">
+                        <h3>📸 Dokumentasi Proses</h3>
+                        <p>Lihat bagaimana Secret Brews dibuat dengan penuh dedikasi dan passion dari lima sahabat yang bermimpi besar.</p>
+                    </div>
+                </div>
+                <div class="media-card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; background: white; height: auto;">
+                    <img src="galeri1.jpeg" alt="Galeri 1" style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px;">
+                    <img src="galeri2.jpeg" alt="Galeri 2" style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px;">
+                    <img src="galeri3.jpeg" alt="Galeri 3" style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px;">
+                    <img src="galeri4.jpeg" alt="Galeri 4" style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px;">
+                </div>
+                <div class="media-card-content">
+                <h3>📷 Galeri Foto</h3>
+                    <p>Kumpulan foto-foto momen spesial Secret Brews dan kepuasan pelanggan setia kami.</p>
+    </div>
+</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="hero">
+            <h1>Tentang Secret Brews.CO</h1>
+            <p>Cerita Lima Sahabat yang Bermimpi Besar</p>
+        </div>
+        <div class="container">
+            <div class="about-content">
+                <h2>Kisah Kami Dimulai dari Nongkrong</h2>
+                <p>Secret Brews berawal dari lima orang sahabat yang hanya sekadar nongkrong bersama. Dari obrolan ringan dan impian sederhana, tercetuslah ide untuk membuka usaha street coffee. Dengan niat baik dan semangat tinggi, kami berani memulai perjalanan entrepreneurship ini.</p>
+
+                <div class="story-highlight">
+                    <h3>💡 Perjalanan Kami</h3>
+                    <p>Setelah sekitar lima bulan perjalanan yang penuh pembelajaran, kami berhasil membangun usaha yang semakin dikenal dan dipercaya oleh masyarakat. Cerita ini membuktikan bahwa mimpi bisa tumbuh dari hal-hal sederhana ketika dilakukan bersama dengan niat baik dan kerja keras yang konsisten.</p>
+                </div>
+
+                <h2>Konsep Secret Brews</h2>
+                <p>Nama "Secret Brews" menekankan keunikan dan eksklusivitas minuman kami. Kata "Secret" melambangkan resep spesial yang hanya kami yang tahu, terutama untuk menu andalan kami: <strong>"Sakabu Bon Bon"</strong> - minuman khas yang tidak ada di tempat lain. Nama ini berasal dari lokasi awal kami berjualan, yaitu "samping kantor bupati".</p>
+
+                <p>Branding kami membawa nilai kedekatan dengan konsumen. Dengan konsep "rahasia rasa," setiap pelanggan merasa seperti bagian dari komunitas kecil yang punya pengalaman eksklusif. Kami tidak hanya menjual kopi, tetapi juga menawarkan cerita, keunikan, dan pengalaman yang berbeda.</p>
+
+                <h2>Visi & Misi</h2>
+                <p><strong>Visi:</strong> Menjadi kedai kopi street coffee terbaik yang dikenal dengan resep unik dan pelayanan hangat di seluruh Manado.</p>
+                <p><strong>Misi:</strong> Memberikan pengalaman bercerita dan kualitas kopi terbaik kepada setiap pelanggan dengan tetap menjaga nilai persahabatan dan kebersamaan.</p>
+            </div>
+        </div>
+    </section>
+
+ <section id="product" class="section">
+    <div class="hero">
+        <h1>Produk Kami</h1>
+        <p>Minuman Spesial dari Resep Rahasia</p>
+    </div>
+    <div class="container">
+        <div class="section-heading">
+            <h2>Secret Menu</h2>
+            <p>Lihat menu lengkap kami dengan berbagai pilihan minuman</p>
+        </div>
+        
+        <div style="max-width: 900px; margin: 0 auto;">
+            <!-- SECRET COFFEE -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15); margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem;">☕ SECRET COFFEE</h3>
+                <div class="products-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Secret Latte</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 15.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Caramel Latte</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 16.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Vanilla Latte</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 16.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Butterscotch Latte</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 22.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Sakabu Bon Bon ⭐</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 16.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NON COFFEE -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15); margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem;">🍫 NON COFFEE</h3>
+                <div class="products-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Chocolate</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 18.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Milk Vanilla</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 18.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Matcha</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 20.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Red Velvet</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 20.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Butterscotch</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 20.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Lemon Tea</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 15.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOT SECRETS -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15); margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem;">🔥 HOT SECRETS</h3>
+                <div class="products-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Black Coffee</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 13.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Daily Secret <small>(Kopi Susu)</small></h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 13.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Chocolate</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 16.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Matcha</h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 18.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIGNATURE -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15); margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem;">✨ SIGNATURE</h3>
+                <div class="products-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Golden Secret <small>(Chocolate Oat)</small></h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 25.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">White Secret <small>(Vanilla Oat Cheese)</small></h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 25.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Green Secret <small>(Matcha Oat)</small></h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 25.000</span>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="color: var(--primary); font-size: 1.1rem;">Red Secret <small>(Red Velvet Oat Cheese)</small></h4>
+                            <span style="color: var(--accent); font-weight: bold; font-size: 1.1rem;">Rp 25.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTER COFFEE -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15); margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem;">☕ FILTER COFFEE</h3>
+                <div style="padding: 1.5rem; background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(139, 69, 19, 0.05)); border-radius: 12px; text-align: center;">
+                    <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 0.5rem;">Ask Barista</h4>
+                    <p style="color: #666; font-size: 1rem;">Tanyakan kepada barista kami untuk pilihan kopi spesial hari ini</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="merchandise" class="section">
+        <div class="hero">
+            <h1>Merchandise</h1>
+            <p>Koleksi Produk Branded Secret Brews.CO</p>
+        </div>
+        <div class="container">
+            <div class="section-heading">
+                <h2>Produk Eksklusif</h2>
+                <p>Dapatkan merchandise resmi Secret Brews dengan desain unik</p>
+            </div>
+            <div class="merch-grid">
+                <div class="merch-card">
+                    <div class="merch-image">
+                        <img src="gambar-tshirt-putih.jpg" alt="T-Shirt Putih Secret Brews">
+                    </div>
+                    <div class="merch-info">
+                        <h3>T-Shirt Premium - Putih</h3>
+                        <p>Kaos berkualitas dengan logo Secret Brews. Nyaman dipakai sehari-hari berwarna Putih.</p>
+                        <div class="price">Rp 60.000</div>
+                    </div>
+                </div>
+                <div class="merch-card">
+                    <div class="merch-image">
+                        <img src="gambar-tshirt-hitam.jpg" alt="T-Shirt Hitam Secret Brews">
+                    </div>
+                    <div class="merch-info">
+                        <h3>T-Shirt Premium - Hitam</h3>
+                        <p>Kaos berkualitas dengan logo Secret Brews. Nyaman dipakai sehari-hari berwarna Hitam.</p>
+                        <div class="price">Rp 60.000</div>
+                    </div>
+                </div>
+                <div class="merch-card">
+                    <div class="merch-image">
+                        <img src="cup.jpg" alt="Tumbler Secret Brews">
+                    </div>
+                    <div class="merch-info">
+                        <h3>cup</h3>
+                        <p>cup dengan desain eksklusif Secret Brews. Keep your coffee! Kapasitas 250ml.</p>
+                        <div class="price">Rp 15.000</div>
+                    </div>
+                </div>
+                <div class="merch-card">
+                    <div class="merch-image">
+                        <img src="totebag.jpg" alt="Totebag Secret Brews">
+                    </div>
+                    <div class="merch-info">
+                        <h3>Totebag </h3>
+                        <p>Tas tote bag  berkualitas dengan logo Secret Brews yang eye-catching. Eco-friendly!</p>
+                        <div class="price">Rp 45.000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section id="contact" class="section">
+    <div class="hero">
+        <h1>Hubungi Kami</h1>
+        <p>Kami Siap Melayani Anda</p>
+    </div>
+    <div class="container">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div class="location-info">
+                <h3><i class="fas fa-map-marker-alt"></i> Lokasi Kami</h3>
+                <p><strong>Secret Brews Street Coffee</strong></p>
+                <p>📍 Jl. Samping Kantor Bupati, Manado</p>
+                <p>North Sulawesi, Indonesia</p>
+                
+                <h3 style="margin-top: 2rem;"><i class="fas fa-phone"></i> Kontak</h3>
+                <p>📞 +62 812-3456-7890</p>
+                <p>📧 contact@secretbrews.com</p>
+                <p>⏰ Buka: 18:00 - 00:00 (Setiap Hari)</p>
+
+                <h3 style="margin-top: 2rem;"><i class="fas fa-share-alt"></i> Ikuti Kami</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/secretbrews.co" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+                    <p style="text-align: center; margin-top: 1rem; color: #666;">@secretbrews.co</p>
+                </div>
+        </div>
+    </div>
+</section>
+
+    <footer>
+        <p>&copy; 2025 Secret Brews. Semua hak dilindungi.</p>
+        <p>Dibuat dengan ❤️ oleh Kelompok 7</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId, event) {
+            event.preventDefault();
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
